@@ -3,8 +3,7 @@ name: flake8 Lint
 on:
   pull_request:
     branches:
-      - staging
-      - lit-assignments
+      - main
 
 jobs:
   flake8:
