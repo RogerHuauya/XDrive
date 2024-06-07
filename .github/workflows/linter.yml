@@ -14,7 +14,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Install dependencies
         run: pip install flake8
-      - name: Run Flake8 on assignments
-        run: flake8 assignments
-      - name: Run Flake8 on analytics
-        run: flake8 analytics
+      - name: Run Flake8
+        run: flake8 .
