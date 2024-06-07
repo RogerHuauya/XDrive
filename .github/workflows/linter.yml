@@ -1,0 +1,21 @@
+name: flake8 Lint
+
+on:
+  pull_request:
+    branches:
+      - staging
+      - lit-assignments
+
+jobs:
+  flake8:
+    name: Flake8
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install flake8
+      - name: Run Flake8 on assignments
+        run: flake8 assignments
+      - name: Run Flake8 on analytics
+        run: flake8 analytics
