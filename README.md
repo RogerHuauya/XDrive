@@ -1,5 +1,12 @@
-# XDrive
+# XDrive 💿📈
 
+## Team Members 🧑‍💼🧑‍💼
+| Name            | Email                     | GitHub User    |
+|-----------------|---------------------------|----------------|
+| Roger Huauya Mamani | roger.huauya@utec.edu.pe | [Rogerhuauya](https://github.com/Rogerhuauya) |
+| Jonathan Quilca Valenzuela | jonathan.quilca@utec.edu.pe | [jonyyy1](https://github.com/jonyyy1) |
+| Alvaro Garcia Hurtado | alvaro.garcia.h@utec.edu.pe | [AlvaUtec](https://github.com/AlvaUtec) |
+| Juan Diego Castro | juan.castro.p@utec.edu.pe | [ByJuanDiego](https://github.com/ByJuanDiego) |
 ## Description
 
 This project aims to create a file storage system that allow users to upload, download files, providing a unique URL for each file uploaded. The project is built using Django and Django Rest Framework.
@@ -7,35 +14,36 @@ This project aims to create a file storage system that allow users to upload, do
 
 ## Table of Contents
 
-- [XDrive](#xdrive)
+- [XDrive 💿📈](#xdrive-)
+  - [Team Members 🧑‍💼🧑‍💼](#team-members-)
   - [Description](#description)
   - [Table of Contents](#table-of-contents)
-  - [Installation](#installation)
-    - [Requirements](#requirements)
-    - [Setting up Docker environment](#setting-up-docker-environment)
-  - [Prerequisites](#prerequisites)
-    - [For Windows and macOS:](#for-windows-and-macos)
-    - [For Linux:](#for-linux)
-  - [Docker Compose Workflow Guide](#docker-compose-workflow-guide)
-    - [Starting Docker Compose](#starting-docker-compose)
-  - [Checking Container Status](#checking-container-status)
-  - [Entering the Shell of a Container](#entering-the-shell-of-a-container)
-  - [Entering ZSH Terminal (Optional)](#entering-zsh-terminal-optional)
-  - [Exiting the Container's Shell](#exiting-the-containers-shell)
-    - [Setting up Django environment](#setting-up-django-environment)
+  - [Installation 💻🔧](#installation-)
+    - [Requirements 🔍✔️](#requirements-️)
+    - [Setting up Docker environment 🐳🔧🛠️](#setting-up-docker-environment-️)
+      - [Prerequisites](#prerequisites)
+      - [For Windows and macOS:](#for-windows-and-macos)
+      - [For Linux:](#for-linux)
+    - [Docker Compose Workflow Guide](#docker-compose-workflow-guide)
+      - [Starting Docker Compose 🚀🐳](#starting-docker-compose-)
+      - [Checking Container Status](#checking-container-status)
+      - [Entering the Shell of a Container](#entering-the-shell-of-a-container)
+      - [Entering ZSH Terminal (Optional)](#entering-zsh-terminal-optional)
+      - [Exiting the Container's Shell](#exiting-the-containers-shell)
+    - [Setting up Django environment 🐍🛠️](#setting-up-django-environment-️)
       - [Prerequisites](#prerequisites-1)
       - [Django Workflow Guide](#django-workflow-guide)
     - [Running Tests](#running-tests)
-  - [Usage](#usage)
+  - [Usage 🔄💻](#usage-)
     - [API Endpoints](#api-endpoints)
       - [File Upload](#file-upload)
       - [File Download](#file-download)
-  - [License](#license)
+  - [License 📜⚖️](#license-️)
 
 
-## Installation
+## Installation 💻🔧
 
-### Requirements
+### Requirements 🔍✔️
 
 - Python 3.8
 - Django 3.2
@@ -57,24 +65,24 @@ docker-compose --version
 djangorestframework --version
 ```
 
-### Setting up Docker environment
+### Setting up Docker environment 🐳🔧🛠️
 _________________________________
 
 This section provides step-by-step instructions on
 how to set up and work with the literal project using Docker and Docker Compose
 
-## Prerequisites
+#### Prerequisites
 
 Before you begin, you need to install Docker. 
 Follow these steps based on your operating system:
 
-### For Windows and macOS:
+#### For Windows and macOS: 
 
 1. *Download Docker Desktop*: Go to the [Docker Desktop website](https://www.docker.com/products/docker-desktop) and download the appropriate installer for your operating system.
 
 2. *Install Docker Desktop*: Run the installer and follow the on-screen instructions.
 
-### For Linux:
+#### For Linux:
 
 1. *Download Docker Engine*: Go to the [Docker Engine website](https://docs.docker.com/engine/install/) and follow the instructions for your Linux distribution.
 2. *Download Docker Compose*: Go to the [Docker Compose website](https://docs.docker.com/compose/install/) and follow the instructions for your Linux distribution.
@@ -94,9 +102,9 @@ Follow these steps based on your operating system:
    
    This command prints the version number of Docker Compose.
 
-## Docker Compose Workflow Guide
+### Docker Compose Workflow Guide
 
-### Starting Docker Compose
+#### Starting Docker Compose 🚀🐳
 
 - *Navigate to the literal project root folder*:
 
@@ -114,7 +122,7 @@ DB_PORT=5432
   
   Add -d to run containers in the background.
 
-## Checking Container Status
+#### Checking Container Status
 
 - *List Active Containers*:
   bash
@@ -122,7 +130,7 @@ DB_PORT=5432
   
   This will show container IDs, names, and status.
 
-## Entering the Shell of a Container
+#### Entering the Shell of a Container
 
 - *Find the Container ID or Name* (use docker ps to list running containers):
   bash
@@ -135,21 +143,21 @@ DB_PORT=5432
   docker exec -it <container_id_or_name> /bin/bash
   
 
-## Entering ZSH Terminal (Optional)
+#### Entering ZSH Terminal (Optional)
 
 - *Once in the Container's Shell*:
   bash
   exec zsh
   
 
-## Exiting the Container's Shell
+#### Exiting the Container's Shell
 
 - To exit the shell without stopping the container:
   bash
   exit
 
 
-### Setting up Django environment
+### Setting up Django environment 🐍🛠️
 
 #### Prerequisites
 
@@ -195,7 +203,7 @@ http://127:0.0.1:8000
   ```
 
 
-## Usage
+## Usage 🔄💻
 
 ### API Endpoints
 
@@ -232,6 +240,8 @@ http://127:0.0.1:8000
 - *Description*: Downloads a file by its upload ID.
 
 
-## License
+## License 📜⚖️
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Happy coding! ✨👩‍💻👨‍💻
