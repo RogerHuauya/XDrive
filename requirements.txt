@@ -11,7 +11,5 @@ boto3==1.26.59
 gunicorn==20.1.0
 psycopg2-binary==2.9.6
 drf-yasg
-langchain==0.1.5
-langchain_community==0.0.17
-langchain_openai==0.0.5
 dj_database_url
+flake8
