@@ -24,8 +24,8 @@ This project aims to create a file storage system that allow users to upload, do
       - [Prerequisites](#prerequisites)
       - [For Windows and macOS:](#for-windows-and-macos)
       - [For Linux:](#for-linux)
-    - [Docker Compose Workflow Guide](#docker-compose-workflow-guide)
-      - [Starting Docker Compose 🚀🐳](#starting-docker-compose-)
+    - [Docker Compose Workflow Guide 🚀🐳](#docker-compose-workflow-guide-)
+      - [Starting Docker Compose](#starting-docker-compose)
       - [Checking Container Status](#checking-container-status)
       - [Entering the Shell of a Container](#entering-the-shell-of-a-container)
       - [Entering ZSH Terminal (Optional)](#entering-zsh-terminal-optional)
@@ -33,7 +33,7 @@ This project aims to create a file storage system that allow users to upload, do
     - [Setting up Django environment 🐍🛠️](#setting-up-django-environment-️)
       - [Prerequisites](#prerequisites-1)
       - [Django Workflow Guide](#django-workflow-guide)
-    - [Running Tests](#running-tests)
+    - [Running Tests 🏃‍♂️🔬](#running-tests-️)
   - [Usage 🔄💻](#usage-)
     - [API Endpoints](#api-endpoints)
       - [File Upload](#file-upload)
@@ -45,9 +45,9 @@ This project aims to create a file storage system that allow users to upload, do
 
 ### Requirements 🔍✔️
 
-- Python 3.8
-- Django 3.2
-- Django Rest Framework 3.12
+- Python 3.9
+- Django 5.02
+- Django Rest Framework 3.14
 - Docker
 - Docker Compose
 Make sure you have the above requirements installed before proceeding. Try running the following command to install them:
@@ -102,9 +102,9 @@ Follow these steps based on your operating system:
    
    This command prints the version number of Docker Compose.
 
-### Docker Compose Workflow Guide
+### Docker Compose Workflow Guide 🚀🐳
 
-#### Starting Docker Compose 🚀🐳
+#### Starting Docker Compose 
 
 - *Navigate to the literal project root folder*:
 
@@ -194,7 +194,7 @@ After running the server, you can access the API by visiting the following URL i
 http://127:0.0.1:8000
 ```
 
-### Running Tests
+### Running Tests 🏃‍♂️🔬
 
 - *Navigate to the literal project root folder*:
 - *Run Tests*:
