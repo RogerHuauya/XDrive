@@ -29,9 +29,11 @@ SECRET_KEY = ('django-insecure-=oluke6(y*3p&#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
+
 CHUNK_SIZE = 1024 * 1024 * 5  # 5MB
 
-ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -59,6 +61,14 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'XDrive.urls'
 
 TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'environment': 'XDrive.jinja2.environment',
+        },
+    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
