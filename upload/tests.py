@@ -3,13 +3,9 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from django.urls import reverse
 from .models import (MasterFile, ChunkedFile)
+from .utils import get_number_of_chunks
 import hashlib
 from django.conf import settings
-from math import ceil
-
-
-def get_number_of_chunks(file_size, chunk_size):
-    return ceil(file_size / chunk_size)
 
 
 class FileUploadTests(TestCase):
@@ -22,6 +18,18 @@ class FileUploadTests(TestCase):
         self.chunk_size = settings.CHUNK_SIZE
         self.test_file_content = b"Master file content" * self.chunk_size * 2
         self.md5_checksum = hashlib.md5(self.test_file_content).hexdigest()
+
+
+    def test_get_number_of_chunks_is_correct_for_full_chunks(self):
+        number_of_chunks = get_number_of_chunks(len(self.test_file_content), self.chunk_size)
+        self.assertEqual(number_of_chunks, 38)
+
+
+    def test_get_number_of_chunks_is_correct_for_1_non_full_chunk(self):
+        self.test_file_content += b"a"
+        number_of_chunks = get_number_of_chunks(len(self.test_file_content), self.chunk_size)
+        self.assertEqual(number_of_chunks, 39)
+
 
     def test_can_create_empty_masterfile(self):
         number_of_chunks = get_number_of_chunks(len(self.test_file_content), self.chunk_size)
@@ -39,4 +47,5 @@ class FileUploadTests(TestCase):
         self.assertEqual(master_file.is_complete(), False)
 
     def tearDown(self):
+        self.test_file_content = b"Master file content" * self.chunk_size * 2
         MasterFile.objects.all().delete()
