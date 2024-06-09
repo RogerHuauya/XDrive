@@ -2,9 +2,14 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
 from django.urls import reverse
-from .models import MasterFile
+from .models import (MasterFile, ChunkedFile)
 import hashlib
 from django.conf import settings
+from math import ceil
+
+
+def get_number_of_chunks(file_size, chunk_size):
+    return ceil(file_size / chunk_size)
 
 
 class FileUploadTests(TestCase):
@@ -18,8 +23,8 @@ class FileUploadTests(TestCase):
         self.test_file_content = b"Master file content" * self.chunk_size * 2
         self.md5_checksum = hashlib.md5(self.test_file_content).hexdigest()
 
-    def test_create_masterfile_and_upload_chunkfile(self):
-        number_of_chunks = len(self.test_file_content) // self.chunk_size + 1
+    def test_can_create_empty_masterfile(self):
+        number_of_chunks = get_number_of_chunks(len(self.test_file_content), self.chunk_size)
         response = self.client.post(self.master_file_url, {
             'file_name': self.test_file_name,
             'md5_checksum': self.md5_checksum,
