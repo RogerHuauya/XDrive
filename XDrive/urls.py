@@ -37,7 +37,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('web/', include('web.urls')),  # Agrega esta línea
+    path('', include('web.urls')),  # Agrega esta línea
 
     path('upload/', include('upload.urls')),
 
