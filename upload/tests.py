@@ -22,13 +22,13 @@ class FileUploadTests(TestCase):
         self.md5_checksum = hashlib.md5(self.test_file_content).hexdigest()
 
 
-    def test_get_number_of_chunks_is_correct_for_full_chunks(self):
+    def test_get_number_of_chunks_is_correct_for_full_chunks_only(self):
         number_of_chunks = get_number_of_chunks(len(self.test_file_content), self.chunk_size)
         expected_number_of_chunks = 38
         self.assertEqual(number_of_chunks, expected_number_of_chunks)
 
 
-    def test_get_number_of_chunks_is_correct_for_1_non_full_chunk(self):
+    def test_get_number_of_chunks_is_correct_for_38_full_chunks_and_1_non_full_chunk(self):
         self.test_file_content += b"a"
         number_of_chunks = get_number_of_chunks(len(self.test_file_content), self.chunk_size)
         expected_number_of_chunks = 39
