@@ -1,10 +1,5 @@
-from django.template import loader
-from django.http import HttpResponse
+from django.shortcuts import render
 
 
-def my_view(request):
-    template = loader.get_template('base.html')
-    context = {
-        'variable': 'value',
-    }
-    return HttpResponse(template.render(context, request))
+def home_page(request):
+    return render(request, 'web/index.html')
