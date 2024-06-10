@@ -1,3 +1,4 @@
+{% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark ">
 
     <button class="navbar-toggler m-auto"  type="button" data-toggle="collapse" data-target="#navbarText"
@@ -7,7 +8,7 @@
     <div class="collapse navbar-collapse" style="justify-content: space-between;" id="navbarText">
 
         <a class="navbar-brand" href="#">
-            <img src="{{ static('images/logo.webp') }}  " alt="Logo" width="60" height="60"
+            <img src="{% static 'images/logo.webp' %}" alt="Logo" width="60" height="60"
                  class="d-inline-block align-text-top">
         </a>
         <ul class="navbar-nav ">
