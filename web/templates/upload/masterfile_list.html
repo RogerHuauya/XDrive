@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Master File List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ static('uploads_styles.css') }}">
+</head>
+<body>
+    <h1>Master File List</h1>
+    <div class="master-table-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>MD5 Checksum</th>
+                    <th>Number of Chunks</th>
+                    <th>Uploaded At</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="master-table-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+                {% for master_file in master_files %}
+                    <tr>
+                        <td>{{ master_file.file_name }}</td>
+                        <td>{{ master_file.md5_checksum }}</td>
+                        <td>{{ master_file.number_of_chunks }}</td>
+                        <td>{{ master_file.uploaded_at }}</td>
+                        <td><a href="{{ master_file.file }}" download>Download</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

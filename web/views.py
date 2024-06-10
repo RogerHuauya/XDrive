@@ -11,6 +11,15 @@ def home_page(request):
     }
     return render(request, 'web/index.html', context)
 
+def masterFileListView(request):
+    master_files = MasterFile.objects.all()
+    # file = models.FileField(upload_to='master_files/', null=True, blank=True)
+    # file_name = models.CharField(max_length=255)
+    # md5_checksum = models.CharField(max_length=32)
+    # number_of_chunks = models.PositiveIntegerField()
+    # uploaded_at = models.DateTimeField(auto_now_add=True)
+    return render(request, 'upload/masterfile_list.html', {'master_files': master_files})
+
 
 @csrf_exempt
 def upload_file_chunk(request):
@@ -93,3 +102,4 @@ def view_file(request, file_id):
     file_path = master_file.file.path
     with open(file_path, 'rb') as f:
         return HttpResponse(f.read(), content_type="image/png")
+
