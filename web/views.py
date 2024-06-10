@@ -36,7 +36,8 @@ def upload_file_chunk(request):
                 chunk_number=chunk_number
             )
 
-            print(f'Chunks subidos para {master_file.id}: {master_file.chunkedfile_set.count()} de {total_chunks}')
+            print(f'Chunks subidos para {master_file.id}:'
+                  f' {master_file.chunkedfile_set.count()} de {total_chunks}')
             print(f'Ruta del archivo chunk: {chunked_file.file.path}')
 
             if master_file.is_complete():
