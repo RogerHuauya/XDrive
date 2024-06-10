@@ -21,13 +21,11 @@ class FileUploadTests(TestCase):
         self.test_file_content = b"Master file content" * self.chunk_size * 2
         self.md5_checksum = hashlib.md5(self.test_file_content).hexdigest()
 
-
     def test_get_number_of_chunks_is_correct_for_full_chunks_only(self):
-        number_of_chunks = get_number_of_chunks(len(self.test_file_content), 
+        number_of_chunks = get_number_of_chunks(len(self.test_file_content),
                                                 self.chunk_size)
         expected_number_of_chunks = 38
         self.assertEqual(number_of_chunks, expected_number_of_chunks)
-
 
     def test_get_number_of_chunks_is_correct_for_1_non_full_chunk(self):
         self.test_file_content += b"a"
@@ -35,7 +33,6 @@ class FileUploadTests(TestCase):
             len(self.test_file_content), self.chunk_size)
         expected_number_of_chunks = 39
         self.assertEqual(number_of_chunks, expected_number_of_chunks)
-
 
     def test_can_create_empty_masterfile(self):
         number_of_chunks = get_number_of_chunks(
@@ -54,7 +51,6 @@ class FileUploadTests(TestCase):
         self.assertEqual(master_file.number_of_chunks, number_of_chunks)
         self.assertEqual(master_file.is_complete(), False)
 
-
     def test_can_create_one_chunk_for_masterfile(self):
         number_of_chunks = get_number_of_chunks(
             len(self.test_file_content), self.chunk_size)
@@ -65,8 +61,8 @@ class FileUploadTests(TestCase):
         }, format='json')
 
         master_file = MasterFile.objects.first()
-        chunk = self.test_file_content[0 : self.chunk_size]
-        
+        chunk = self.test_file_content[0: self.chunk_size]
+
         upload_time = timezone.now()
         chunk_md5_checksum = hashlib.md5(chunk).hexdigest()
         chunk_file_name = f"test-chunk-{master_file.id}-0.txt"
@@ -77,26 +73,25 @@ class FileUploadTests(TestCase):
             'md5_checksum': chunk_md5_checksum,
             'uploaded_at': upload_time
         }, format='multipart')
-        
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ChunkedFile.objects.count(), 1)
 
         chunked_file = ChunkedFile.objects.filter(
-            master_file=master_file.id, 
+            master_file=master_file.id,
             chunk_number=0).first()
-        
+
         self.assertIsNotNone(chunked_file)
         self.assertEqual(chunked_file.master_file.id, master_file.id)
         self.assertEqual(chunked_file.file.read(), chunk)
         self.assertEqual(chunked_file.chunk_number, 0)
         self.assertEqual(chunked_file.md5_checksum, chunk_md5_checksum)
 
-
     def test_can_create_all_chunks_for_masterfile(self):
         number_of_chunks = get_number_of_chunks(
-            len(self.test_file_content), 
+            len(self.test_file_content),
             self.chunk_size)
-        
+
         self.client.post(self.master_file_url, {
             'file_name': self.test_file_name,
             'md5_checksum': self.md5_checksum,
@@ -115,7 +110,7 @@ class FileUploadTests(TestCase):
             upload_time = timezone.now()
             chunk_md5_checksum = hashlib.md5(chunk).hexdigest()
             chunk_file_name = chunk_file_prefix.format(
-                master_file.id, 
+                master_file.id,
                 current_number_of_posted_chunks
             )
             response = self.client.post(self.chunked_file_url, {
@@ -125,28 +120,27 @@ class FileUploadTests(TestCase):
                 'md5_checksum': chunk_md5_checksum,
                 'uploaded_at': upload_time
             }, format='multipart')
-            
+
             current_number_of_posted_chunks += 1
 
-            self.assertEqual(response.status_code, 
+            self.assertEqual(response.status_code,
                              status.HTTP_201_CREATED)
-            self.assertEqual(ChunkedFile.objects.count(), 
+            self.assertEqual(ChunkedFile.objects.count(),
                              current_number_of_posted_chunks)
 
             chunked_file = ChunkedFile.objects.filter(
-                master_file=master_file.id, 
+                master_file=master_file.id,
                 chunk_number=current_number_of_posted_chunks-1).first()
-            
-            self.assertIsNotNone(chunked_file)
-            self.assertEqual(chunked_file.master_file.id, 
-                             master_file.id)
-            self.assertEqual(chunked_file.file.read(), 
-                             chunk)
-            self.assertEqual(chunked_file.chunk_number, 
-                             current_number_of_posted_chunks-1)
-            self.assertEqual(chunked_file.md5_checksum, 
-                             chunk_md5_checksum)
 
+            self.assertIsNotNone(chunked_file)
+            self.assertEqual(chunked_file.master_file.id,
+                             master_file.id)
+            self.assertEqual(chunked_file.file.read(),
+                             chunk)
+            self.assertEqual(chunked_file.chunk_number,
+                             current_number_of_posted_chunks-1)
+            self.assertEqual(chunked_file.md5_checksum,
+                             chunk_md5_checksum)
 
     def tearDown(self):
         self.test_file_content = b"Master file content" * self.chunk_size * 2
