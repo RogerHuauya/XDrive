@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Master File List</title>
+        <link rel="stylesheet" href="{% static 'uploads_styles.css' %}">
+        <script src="{% static 'uploads_scripts.js' %}"></script>
+    </head>
+    <body>
+        <h1>Master File List</h1>
+        <div class="table-responsive-vertical shadow-z-1">
+            <table id="table" class="table table-hover table-mc-light-blue">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>MD5 Checksum</th>
+                        <th>Number of Chunks</th>
+                        <th>Uploaded At</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for master_file in master_files %}
+                        <tr>
+                            <td>{{ master_file.file_name }}</td>
+                            <td>{{ master_file.md5_checksum }}</td>
+                            <td>{{ master_file.number_of_chunks }}</td>
+                            <td>{{ master_file.uploaded_at }}</td>
+                            <td><a href="{{ master_file.file }}" download>Download</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
