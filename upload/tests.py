@@ -76,7 +76,10 @@ class FileUploadTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ChunkedFile.objects.count(), 1)
 
-        chunked_file = ChunkedFile.objects.filter(master_file=master_file.id, chunk_number=0).first()
+        chunked_file = ChunkedFile.objects.filter(
+            master_file=master_file.id, 
+            chunk_number=0).first()
+        
         self.assertIsNotNone(chunked_file)
         self.assertEqual(chunked_file.master_file.id, master_file.id)
         self.assertEqual(chunked_file.file.read(), chunk)
@@ -93,7 +96,8 @@ class FileUploadTests(TestCase):
         }, format='json')
 
         master_file = MasterFile.objects.first()
-        chunks = [self.test_file_content[i * self.chunk_size : (i+1) * self.chunk_size] for i in range(number_of_chunks)]
+        chunks = [self.test_file_content[i * self.chunk_size: (i+1) * self.chunk_size] 
+                  for i in range(number_of_chunks)]
 
         current_number_of_posted_chunks = 0
 
@@ -114,7 +118,10 @@ class FileUploadTests(TestCase):
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
             self.assertEqual(ChunkedFile.objects.count(), current_number_of_posted_chunks)
 
-            chunked_file = ChunkedFile.objects.filter(master_file=master_file.id, chunk_number=current_number_of_posted_chunks-1).first()
+            chunked_file = ChunkedFile.objects.filter(
+                master_file=master_file.id, 
+                chunk_number=current_number_of_posted_chunks-1).first()
+            
             self.assertIsNotNone(chunked_file)
             self.assertEqual(chunked_file.master_file.id, master_file.id)
             self.assertEqual(chunked_file.file.read(), chunk)
