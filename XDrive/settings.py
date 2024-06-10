@@ -29,13 +29,14 @@ SECRET_KEY = ('django-insecure-=oluke6(y*3p&#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
 
 CHUNK_SIZE = 1024 * 1024 * 5  # 5MB
 
-
 # Application definition
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -48,7 +49,6 @@ INSTALLED_APPS = [
     'upload',
     'web',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -85,7 +85,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 WSGI_APPLICATION = 'XDrive.wsgi.application'
 
