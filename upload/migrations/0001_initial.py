@@ -8,30 +8,54 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='MasterFile',
+            name="MasterFile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(blank=True, null=True, upload_to='master_files/')),
-                ('file_name', models.CharField(max_length=255)),
-                ('md5_checksum', models.CharField(max_length=32)),
-                ('number_of_chunks', models.PositiveIntegerField()),
-                ('uploaded_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "file",
+                    models.FileField(blank=True, null=True, upload_to="master_files/"),
+                ),
+                ("file_name", models.CharField(max_length=255)),
+                ("md5_checksum", models.CharField(max_length=32)),
+                ("number_of_chunks", models.PositiveIntegerField()),
+                ("uploaded_at", models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
-            name='ChunkedFile',
+            name="ChunkedFile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(upload_to='chunked_files/')),
-                ('chunk_number', models.PositiveIntegerField()),
-                ('md5_checksum', models.CharField(max_length=32)),
-                ('uploaded_at', models.DateTimeField(auto_now_add=True)),
-                ('master_file', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='upload.masterfile')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("file", models.FileField(upload_to="chunked_files/")),
+                ("chunk_number", models.PositiveIntegerField()),
+                ("md5_checksum", models.CharField(max_length=32)),
+                ("uploaded_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "master_file",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="upload.masterfile",
+                    ),
+                ),
             ],
         ),
     ]

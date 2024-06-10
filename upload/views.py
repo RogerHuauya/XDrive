@@ -4,6 +4,7 @@ from .serializers import ChunkedFileSerializer, MasterFileSerializer
 from django.utils import timezone
 from django.views.generic import ListView
 
+
 class MasterFileListView(ListView):
     model = MasterFile
     paginate_by = 100  # if pagination is desired
@@ -12,7 +13,8 @@ class MasterFileListView(ListView):
         context = super().get_context_data(**kwargs)
         context["now"] = timezone.now()
         return context
-    
+
+
 class MasterFileModelViewSet(viewsets.ModelViewSet):
     queryset = MasterFile.objects.all()
     serializer_class = MasterFileSerializer
