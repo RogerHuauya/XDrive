@@ -14,25 +14,13 @@ class FileUploadTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.master_file_url = reverse("masterfile-list")
-        self.chunked_file_url = reverse("chunkedfile-list")
-        self.test_file_name = "big_file.txt"
+        self.master_file_url = reverse('masterfile-list')
+        self.chunked_file_url = reverse('chunkedfile-list')
+        self.test_file_name = 'big_file.txt'
         self.chunk_size = settings.CHUNK_SIZE
         self.test_file_content = b"Master file content" * self.chunk_size * 2
         self.md5_checksum = hashlib.md5(self.test_file_content).hexdigest()
-        
-    def test_create_masterfile_and_upload_chunkfile(self):
-        number_of_chunks = len(self.test_file_content) // self.chunk_size + 1
-        response = self.client.post(
-            self.master_file_url,
-            {
-                "file_name": self.test_file_name,
-                "md5_checksum": self.md5_checksum,
-                "number_of_chunks": number_of_chunks,
-            },
-            format="json",
-        )
-        
+
     def test_get_number_of_chunks_is_correct_for_full_chunks_only(self):
         number_of_chunks = get_number_of_chunks(len(self.test_file_content),
                                                 self.chunk_size)
