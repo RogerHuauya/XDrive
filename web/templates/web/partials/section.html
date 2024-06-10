@@ -15,14 +15,8 @@
             <span class="browse-button">Browse file</span>
         </div>
         <input id="file" type="file"/>
-        <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden"  name="csrfmiddlewaretoken" id="csrf_token" value="{{ csrf_token }}">
         <button type="submit">Upload</button>
 
     </label>
 </form>
-
-
-{% block extra_js %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
-    <script src="/web/static/scripts.js"></script>
-{% endblock %}

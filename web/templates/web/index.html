@@ -1,6 +1,8 @@
 {% extends 'web/base.html' %}
 
 {% block content %}
-    {% include 'web/partials/section.html'  %}
+    {% with base_url=base_url %}
+        {% include 'web/partials/section.html' %}
+    {% endwith %}
 {% endblock %}
 

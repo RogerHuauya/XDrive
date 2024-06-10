@@ -5,7 +5,7 @@ from .models import ChunkedFile, MasterFile
 class MasterFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = MasterFile
-        fields = ['file_name', 'md5_checksum',
+        fields = ['id', 'file_name', 'md5_checksum',
                   'number_of_chunks']
 
 
