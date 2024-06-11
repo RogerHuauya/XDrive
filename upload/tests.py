@@ -10,6 +10,31 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
 
 
+class Creator:
+    @staticmethod
+    def post_master_file(api_client, master_file_url,
+                         file_name, md5_checksum, number_of_chunks):
+        response = api_client.post(master_file_url, {
+            'file_name': file_name,
+            'md5_checksum': md5_checksum,
+            'number_of_chunks': number_of_chunks
+        }, format='json')
+        return response
+
+    @staticmethod
+    def post_chunked_file(api_client, chunked_file_url, master_file_id,
+                          chunk_file_name, chunk, chunk_number,
+                          chunk_md5_checksum, upload_time):
+        response = api_client.post(chunked_file_url, {
+            'master_file': master_file_id,
+            'file': SimpleUploadedFile(chunk_file_name, chunk),
+            'chunk_number': chunk_number,
+            'md5_checksum': chunk_md5_checksum,
+            'uploaded_at': upload_time
+        }, format='multipart')
+        return response
+
+
 class FileUploadTests(TestCase):
 
     def setUp(self):
@@ -22,12 +47,30 @@ class FileUploadTests(TestCase):
         self.md5_checksum = hashlib.md5(self.test_file_content).hexdigest()
 
     def test_get_number_of_chunks_is_correct_for_full_chunks_only(self):
+        """
+        Test if the number of chunks is correctly calculated
+        for files with only full chunks.
+        This test ensures that when the file size is perfectly
+         divisible by the chunk size,
+        the number of chunks is calculated correctly.
+
+        Number of chunks: 38 => [#####][#####]....[#####]
+        """
         number_of_chunks = get_number_of_chunks(len(self.test_file_content),
                                                 self.chunk_size)
         expected_number_of_chunks = 38
         self.assertEqual(number_of_chunks, expected_number_of_chunks)
 
     def test_get_number_of_chunks_is_correct_for_1_non_full_chunk(self):
+        """
+        Test if the number of chunks is correctly calculated
+        for files with one non-full chunk.
+        This test verifies that when there is a remaining
+        portion of the file after dividing
+        it into chunks, an additional chunk is accounted for.
+
+        Number of chunks: 39 => [#####][#####]....[#####][#    ]
+        """
         self.test_file_content += b"a"
         number_of_chunks = get_number_of_chunks(
             len(self.test_file_content), self.chunk_size)
@@ -35,14 +78,21 @@ class FileUploadTests(TestCase):
         self.assertEqual(number_of_chunks, expected_number_of_chunks)
 
     def test_can_create_empty_masterfile(self):
+        """
+        Test if an empty master file can be successfully created.
+        This test verifies that an empty master file can be
+        created in the system with the
+        correct metadata and initial state.
+        """
         number_of_chunks = get_number_of_chunks(
             len(self.test_file_content), self.chunk_size)
-        response = self.client.post(self.master_file_url, {
-            'file_name': self.test_file_name,
-            'md5_checksum': self.md5_checksum,
-            'number_of_chunks': number_of_chunks
-        }, format='json')
-
+        response = Creator.post_master_file(
+                self.client,
+                self.master_file_url,
+                self.test_file_name,
+                self.md5_checksum,
+                number_of_chunks
+            )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(MasterFile.objects.count(), 1)
         master_file = MasterFile.objects.first()
@@ -52,13 +102,25 @@ class FileUploadTests(TestCase):
         self.assertEqual(master_file.is_complete(), False)
 
     def test_can_create_one_chunk_for_masterfile(self):
+        """
+        Test if a single chunk can be successfully
+        created and associated
+        with a master file.
+
+        This test verifies that a single chunk of a
+        file can be successfully uploaded and
+        associated with its corresponding master file
+        in the system.
+        """
         number_of_chunks = get_number_of_chunks(
             len(self.test_file_content), self.chunk_size)
-        self.client.post(self.master_file_url, {
-            'file_name': self.test_file_name,
-            'md5_checksum': self.md5_checksum,
-            'number_of_chunks': number_of_chunks
-        }, format='json')
+        response = Creator.post_master_file(
+                self.client,
+                self.master_file_url,
+                self.test_file_name,
+                self.md5_checksum,
+                number_of_chunks
+            )
 
         master_file = MasterFile.objects.first()
         chunk = self.test_file_content[0: self.chunk_size]
@@ -66,13 +128,16 @@ class FileUploadTests(TestCase):
         upload_time = timezone.now()
         chunk_md5_checksum = hashlib.md5(chunk).hexdigest()
         chunk_file_name = f"test-chunk-{master_file.id}-0.txt"
-        response = self.client.post(self.chunked_file_url, {
-            'master_file': master_file.id,
-            'file': SimpleUploadedFile(chunk_file_name, chunk),
-            'chunk_number': 0,
-            'md5_checksum': chunk_md5_checksum,
-            'uploaded_at': upload_time
-        }, format='multipart')
+        response = Creator.post_chunked_file(
+                self.client,
+                self.chunked_file_url,
+                master_file.id,
+                chunk_file_name,
+                chunk,
+                0,
+                chunk_md5_checksum,
+                upload_time
+            )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ChunkedFile.objects.count(), 1)
@@ -88,15 +153,25 @@ class FileUploadTests(TestCase):
         self.assertEqual(chunked_file.md5_checksum, chunk_md5_checksum)
 
     def test_can_create_all_chunks_for_masterfile(self):
+        """
+        Test if all chunks can be successfully created and associated
+        with a master file.
+
+        This test verifies that all chunks of a file can be
+        successfully uploaded and
+        associated with their corresponding master file in the system.
+        """
         number_of_chunks = get_number_of_chunks(
             len(self.test_file_content),
             self.chunk_size)
 
-        self.client.post(self.master_file_url, {
-            'file_name': self.test_file_name,
-            'md5_checksum': self.md5_checksum,
-            'number_of_chunks': number_of_chunks
-        }, format='json')
+        Creator.post_master_file(
+            self.client,
+            self.master_file_url,
+            self.test_file_name,
+            self.md5_checksum,
+            number_of_chunks
+        )
 
         master_file = MasterFile.objects.first()
         chunks = [self.test_file_content[
@@ -113,13 +188,17 @@ class FileUploadTests(TestCase):
                 master_file.id,
                 current_number_of_posted_chunks
             )
-            response = self.client.post(self.chunked_file_url, {
-                'master_file': master_file.id,
-                'file': SimpleUploadedFile(chunk_file_name, chunk),
-                'chunk_number': current_number_of_posted_chunks,
-                'md5_checksum': chunk_md5_checksum,
-                'uploaded_at': upload_time
-            }, format='multipart')
+
+            response = Creator.post_chunked_file(
+                self.client,
+                self.chunked_file_url,
+                master_file.id,
+                chunk_file_name,
+                chunk,
+                current_number_of_posted_chunks,
+                chunk_md5_checksum,
+                upload_time
+            )
 
             current_number_of_posted_chunks += 1
 
