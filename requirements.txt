@@ -18,3 +18,4 @@ dj_database_url
 Jinja2==3.1.2
 dj_database_url
 flake8
+django_cypress

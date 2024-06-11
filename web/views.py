@@ -1,10 +1,13 @@
-from django.template import loader
-from django.http import HttpResponse
+from django.shortcuts import render
+from upload.models import MasterFile
 
 
-def my_view(request):
-    template = loader.get_template('base.html')
-    context = {
-        'variable': 'value',
-    }
-    return HttpResponse(template.render(context, request))
+def home_page(request):
+    return render(request, 'web/index.html')
+
+
+def masterFileListView(request):
+    master_files = MasterFile.objects.all()
+    return render(
+        request, "upload/masterfile_list.html", {"master_files": master_files}
+    )
