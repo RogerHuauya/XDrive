@@ -39,6 +39,8 @@ urlpatterns = [
 
     path('', include('web.urls')),  # Agrega esta línea
 
+    path("", include("django_cypress.urls")),
+
     path('upload/', include('upload.urls')),
 
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0),
