@@ -11,35 +11,45 @@
 
 This project aims to create a file storage system that allow users to upload, download files, providing a unique URL for each file uploaded. The project is built using Django and Django Rest Framework.
 
-
 ## Table of Contents
 
 - [XDrive 💿📈](#xdrive-)
-    - [Team Members 🧑‍💼🧑‍💼](#team-members-)
-    - [Description](#description)
-    - [Table of Contents](#table-of-contents)
-    - [Installation 💻🔧](#installation-)
-        - [Requirements 🔍✔️](#requirements-️)
-        - [Setting up Docker environment 🐳🔧🛠️](#setting-up-docker-environment-️)
-            - [Prerequisites](#prerequisites)
-            - [For Windows and macOS:](#for-windows-and-macos)
-            - [For Linux:](#for-linux)
-        - [Docker Compose Workflow Guide 🚀🐳](#docker-compose-workflow-guide-)
-            - [Starting Docker Compose](#starting-docker-compose)
-            - [Checking Container Status](#checking-container-status)
-            - [Entering the Shell of a Container](#entering-the-shell-of-a-container)
-            - [Entering ZSH Terminal (Optional)](#entering-zsh-terminal-optional)
-            - [Exiting the Container's Shell](#exiting-the-containers-shell)
-        - [Setting up Django environment 🐍🛠️](#setting-up-django-environment-️)
-            - [Prerequisites](#prerequisites-1)
-            - [Django Workflow Guide](#django-workflow-guide)
-        - [Running Tests 🏃‍♂️🔬](#running-tests-️)
-    - [Usage 🔄💻](#usage-)
-        - [API Endpoints](#api-endpoints)
-            - [File Upload](#file-upload)
-            - [File Download](#file-download)
-    - [License 📜⚖️](#license-️)
+  - [Team Members 🧑‍💼🧑‍💼](#team-members-)
+  - [Description](#description)
+  - [Table of Contents](#table-of-contents)
+  - [Public Repository 📁🔗](#public-repository-)
+  - [Task Overview 📝📈](#task-overview-)
+  - [Installation 💻🔧](#installation-)
+    - [Requirements 🔍✔️](#requirements-️)
+    - [Setting up Docker environment 🐳🔧🛠️](#setting-up-docker-environment-️)
+      - [Prerequisites](#prerequisites)
+      - [For Windows and macOS:](#for-windows-and-macos)
+      - [For Linux:](#for-linux)
+    - [Docker Compose Workflow Guide 🚀🐳](#docker-compose-workflow-guide-)
+      - [Starting Docker Compose](#starting-docker-compose)
+      - [Checking Container Status](#checking-container-status)
+      - [Entering the Shell of a Container](#entering-the-shell-of-a-container)
+      - [Entering ZSH Terminal (Optional)](#entering-zsh-terminal-optional)
+      - [Exiting the Container's Shell](#exiting-the-containers-shell)
+    - [Setting up Django environment 🐍🛠️](#setting-up-django-environment-️)
+      - [Prerequisites](#prerequisites-1)
+      - [Django Workflow Guide](#django-workflow-guide)
+    - [Running Tests 🏃‍♂️🔬](#running-tests-️)
+  - [Usage 🔄💻](#usage-)
+    - [API Endpoints](#api-endpoints)
+      - [File Upload](#file-upload)
+      - [File Download](#file-download)
+  - [License 📜⚖️](#license-️)
 
+
+## Public Repository 📁🔗
+- **Github URL**: https://github.com/RogerHuauya/XDrive
+
+## Task Overview 📝📈
+
+This project has been created using Github Projects. You can access the project board by visiting the following URL:
+
+- **Github Project Board**: [XDrive Project Board](https://github.com/users/RogerHuauya/projects/7)
 
 ## Installation 💻🔧
 
@@ -204,6 +214,14 @@ http://127:0.0.1:8000
 
 
 ## Usage 🔄💻
+
+APIs have been implemented using Django Rest Framework. The project has been containerized using Docker and Docker Compose. The project has been tested using Django's built-in testing framework.
+
+All endpoints can be found by running the project and visiting the following URL:
+
+```bash
+http://127:0.0.1:8000/docs
+```
 
 ### API Endpoints
 
