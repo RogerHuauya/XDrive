@@ -3,13 +3,13 @@
 <html>
 <head>
     <title>{% block title %}My Site{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 
 <body class="custom-background">
 <div class="m-auto d-flex  flex-column justify-content-center"
      style="max-width: 95%; height: 100%">
-
 
     {% include 'web/partials/navbar.html' %}
     <main class="mt-auto">
@@ -20,7 +20,6 @@
     {% include 'web/partials/footer.html' %}
 </div>
 <!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
