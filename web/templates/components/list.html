@@ -1,4 +1,4 @@
-{% extends 'web/base.html' %}
+{% extends 'web/../layout/base.html' %}
 {% load static %}
 
 {% block title %}Master File List{% endblock %}
@@ -14,6 +14,7 @@
                     <th>MD5 Checksum</th>
                     <th>Number of Chunks</th>
                     <th>Uploaded At</th>
+                    <th>Status</th>
                     <th>Download</th>
                 </tr>
             </thead>
@@ -24,10 +25,24 @@
                         <td>{{ master_file.md5_checksum }}</td>
                         <td>{{ master_file.number_of_chunks }}</td>
                         <td>{{ master_file.uploaded_at }}</td>
+                        <td>{{ master_file.status }}</td>
+                        <td>
+                        {% if master_file.status == 'completed' %}
+                            <button class="btn btn-primary" onclick="downloadFile('{{ master_file.id }}')">Download</button>
+                        {% elif master_file.status == 'in_progress' %}
+                            <button class="btn btn-warning" onclick="resumeUpload(event, '{{ master_file.id }}')">Resume Upload</button>
+                        {% elif master_file.status == 'pending' %}
+                            <button class="btn btn-info">Pending</button>
+                        {% else %}
+                            <button class="btn btn-secondary" disabled>No Actions</button>
+                        {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+<input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+
 {% endblock %}
