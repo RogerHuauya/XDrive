@@ -7,6 +7,7 @@ class MasterFile(models.Model):
     md5_checksum = models.CharField(max_length=32)
     number_of_chunks = models.PositiveIntegerField()
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, default='pending')
 
     def is_complete(self):
         return self.chunkedfile_set.count() == self.number_of_chunks
