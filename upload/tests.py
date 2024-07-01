@@ -230,22 +230,31 @@ class FileUploadTests(TestCase):
 
     def test_can_merge_chunked_files(self):
         """
-        Test if chunked files can be successfully uploaded, merged,
-        and the merged content matches the original content with the correct MD5 checksum.
+        Test if chunked files can be successfully uploaded,
+        merged, and the merged content matches the original
+        content with the correct MD5 checksum.
 
         Setup:
-        - Calculate the number of chunks based on the size of `test_file_content` and `chunk_size`.
-        - Create a MasterFile instance by posting metadata using `post_master_file`.
-        - Divide `test_file_content` into chunks based on `chunk_size`.
+        - Calculate the number of chunks based on the size of
+          `test_file_content` and `chunk_size`.
+        - Create a MasterFile instance by posting metadata
+          using `post_master_file`.
+        - Divide `test_file_content` into chunks based
+          on `chunk_size`.
 
         Execution:
-        - Upload each chunk using `post_chunked_file`, associating them with the created MasterFile.
-        - Call `get_merge_chunks` to initiate the merging process for uploaded chunks.
+        - Upload each chunk using `post_chunked_file`, associating
+          them with the created MasterFile.
+        - Call `get_merge_chunks` to initiate the merging process
+          for uploaded chunks.
 
         Assertions:
-        - Verify that the HTTP response status code from `get_merge_chunks` is `200 OK`.
-        - Retrieve and compare the merged content (`merged_content`) with `test_file_content`.
-        - Compute the MD5 checksum of `merged_content` and compare it with the expected checksum (`md5_checksum`) of the MasterFile.
+        - Verify that the HTTP response status code from
+         `get_merge_chunks` is `200 OK`.
+        - Retrieve and compare the merged content (`merged_content`)
+          with `test_file_content`.
+        - Compute the MD5 checksum of `merged_content` and compare
+          it with the expected checksum (`md5_checksum`) of the MasterFile.
         """
         number_of_chunks = get_number_of_chunks(
             len(self.test_file_content),
