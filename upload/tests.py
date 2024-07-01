@@ -34,6 +34,12 @@ class Creator:
         }, format='multipart')
         return response
 
+    @staticmethod
+    def get_merge_chunks(api_client, merge_chunks_url, master_file_id):
+        url = f'{merge_chunks_url}?master_file_id={master_file_id}'
+        response = api_client.get(url)
+        return response
+
 
 class FileUploadTests(TestCase):
 
@@ -41,6 +47,7 @@ class FileUploadTests(TestCase):
         self.client = APIClient()
         self.master_file_url = reverse('masterfile-list')
         self.chunked_file_url = reverse('chunkedfile-list')
+        self.merge_chunks_url = reverse('chunkedfile-merge-chunks')
         self.test_file_name = 'big_file.txt'
         self.chunk_size = settings.CHUNK_SIZE
         self.test_file_content = b"Master file content" * self.chunk_size * 2
@@ -220,6 +227,88 @@ class FileUploadTests(TestCase):
                              current_number_of_posted_chunks-1)
             self.assertEqual(chunked_file.md5_checksum,
                              chunk_md5_checksum)
+
+    def test_can_merge_chunked_files(self):
+        """
+        Test if chunked files can be successfully uploaded,
+        merged, and the merged content matches the original
+        content with the correct MD5 checksum.
+
+        Setup:
+        - Calculate the number of chunks based on the size of
+          `test_file_content` and `chunk_size`.
+        - Create a MasterFile instance by posting metadata
+          using `post_master_file`.
+        - Divide `test_file_content` into chunks based
+          on `chunk_size`.
+
+        Execution:
+        - Upload each chunk using `post_chunked_file`, associating
+          them with the created MasterFile.
+        - Call `get_merge_chunks` to initiate the merging process
+          for uploaded chunks.
+
+        Assertions:
+        - Verify that the HTTP response status code from
+         `get_merge_chunks` is `200 OK`.
+        - Retrieve and compare the merged content (`merged_content`)
+          with `test_file_content`.
+        - Compute the MD5 checksum of `merged_content` and compare
+          it with the expected checksum (`md5_checksum`) of the MasterFile.
+        """
+        number_of_chunks = get_number_of_chunks(
+            len(self.test_file_content),
+            self.chunk_size)
+
+        # Create a MasterFile instance
+        response = Creator.post_master_file(
+            self.client,
+            self.master_file_url,
+            self.test_file_name,
+            self.md5_checksum,
+            number_of_chunks
+        )
+
+        master_file = MasterFile.objects.first()
+        chunks = [self.test_file_content[
+                  i * self.chunk_size: (i + 1) * self.chunk_size
+                  ] for i in range(number_of_chunks)]
+
+        for i, chunk in enumerate(chunks):
+            upload_time = timezone.now()
+            chunk_md5_checksum = hashlib.md5(chunk).hexdigest()
+            chunk_file_name = f"test-chunk-{master_file.id}-{i}.txt"
+
+            response = Creator.post_chunked_file(
+                self.client,
+                self.chunked_file_url,
+                master_file.id,
+                chunk_file_name,
+                chunk,
+                i,
+                chunk_md5_checksum,
+                upload_time
+            )
+
+        response = Creator.get_merge_chunks(
+            self.client,
+            self.merge_chunks_url,
+            master_file.id
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        master_file.refresh_from_db()
+
+        self.assertTrue(master_file.file)
+        with master_file.file.open('rb') as f:
+            merged_content = f.read()
+
+        self.assertEqual(merged_content, self.test_file_content)
+
+        obtained_md5 = hashlib.md5(merged_content).hexdigest()
+        expected_md5 = master_file.md5_checksum
+        self.assertEqual(obtained_md5, expected_md5)
 
     def tearDown(self):
         self.test_file_content = b"Master file content" * self.chunk_size * 2

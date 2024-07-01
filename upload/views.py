@@ -1,3 +1,4 @@
+import io
 from .models import ChunkedFile, MasterFile
 from rest_framework import viewsets
 from .serializers import ChunkedFileSerializer, MasterFileSerializer
@@ -7,6 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
+from django.core.files.base import ContentFile
 
 
 class MasterFileListView(ListView):
@@ -46,8 +48,8 @@ class ChunkedFileModelViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(last_chunk)
         return Response(serializer.data)
 
-    @action(detail=False, methods=['get'], url_path='download')
-    def download_file(self, request):
+    @action(detail=False, methods=['get'], url_path='merge-chunks')
+    def merge_chunks(self, request):
         master_file_id = request.query_params.get('master_file_id')
         if not master_file_id:
             return Response({"error": "master_file_id parameter is required"},
@@ -61,15 +63,43 @@ class ChunkedFileModelViewSet(viewsets.ModelViewSet):
             return Response({"error": "No chunks available for "
                                       "this master file"}, status=404)
 
-        # Combine the chunks into a single file
-        combined_file_content = b''
+        combined_file_content = io.BytesIO()
         for chunk in chunks:
             with chunk.file.open('rb') as f:
-                combined_file_content += f.read()
+                combined_file_content.write(f.read())
 
-        response = HttpResponse(combined_file_content,
+        combined_file_content.seek(0)
+        django_file = ContentFile(combined_file_content.read(),
+                                  name=master_file.file_name)
+        combined_file_content.close()
+        master_file.file.save(master_file.file_name, django_file)
+
+        response = HttpResponse(django_file,
                                 content_type='application/octet-stream')
         response['Content-Disposition'] = f'attachment; ' \
                                           f'filename="{master_file.file_name}"'
         print(response['Content-Disposition'])
+        return response
+
+    @action(detail=False, methods=['get'], url_path='download')
+    def download_file(self, request):
+        master_file_id = request.query_params.get('master_file_id')
+        if not master_file_id:
+            return Response({"error": "master_file_id parameter is required"},
+                            status=400)
+
+        master_file = get_object_or_404(MasterFile,
+                                        id=master_file_id)
+
+        if not master_file.file:
+            return Response({"error": "File not found for this master_file"},
+                            status=404)
+
+        with master_file.file.open('rb') as f:
+            response = HttpResponse(f.read(),
+                                    content_type='application/octet-stream')
+            response['Content-Disposition'] = (
+                f'attachment; filename="{master_file.file_name}"'
+            )
+
         return response
