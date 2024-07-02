@@ -28,7 +28,7 @@
                         <td>{{ master_file.status }}</td>
                         <td>
                         {% if master_file.status == 'completed' %}
-                            <button class="btn btn-primary" onclick="downloadFile('{{ master_file.id }}')">Download</button>
+                            <button class="btn btn-primary" onclick="{% if  master_file.file %}window.location.href='{{ master_file.file.url }}'{% endif %}">Download</button>
                         {% elif master_file.status == 'in_progress' %}
                             <button class="btn btn-warning" onclick="resumeUpload(event, '{{ master_file.id }}')">Resume Upload</button>
                         {% elif master_file.status == 'pending' %}

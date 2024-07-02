@@ -186,6 +186,19 @@ async function updateMasterFileStatus(masterFileId, status, csrfToken) {
     }
 }
 
+async function mergeChunks(masterFileId, csrfToken) {
+    try {
+        const response = await axios.get(`/upload/chunkedfile/merge-chunks/?master_file_id=${masterFileId}`, null, {
+            headers: {
+                'X-CSRFToken': csrfToken
+            }
+        });
+        return response.data;
+    } catch (error) {
+        handleError(error, 'Failed to merge chunks');
+    }
+}
+
 async function uploadFile(event, masterFileId = null, startChunk = 0) {
     console.log("1 - Iniciando función uploadFile");
     event.preventDefault();
@@ -225,7 +238,7 @@ async function uploadFile(event, masterFileId = null, startChunk = 0) {
                 await updateMasterFileStatus(masterFileId, 'in_progress', csrfToken);
             }
         }
-
+        await mergeChunks(masterFileId, csrfToken);
         await updateMasterFileStatus(masterFileId, 'completed', csrfToken);
         await clearChunksFromIndexedDB(masterFileId); //
 
@@ -272,6 +285,7 @@ async function printIndexedDBContents() {
                 await uploadChunkToServer(fileId, chunk, chunkNumber, chunkMd5, csrfToken);
 
             }
+            await mergeChunks(masterFileId, csrfToken);
             await updateMasterFileStatus(masterFileId, 'completed', csrfToken);
             await clearChunksFromIndexedDB(masterFileId);
         }
