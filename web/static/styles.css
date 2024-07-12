@@ -120,3 +120,24 @@ body.custom-background {
 .icon {
   font-size: 20px;
 }
+
+@media (max-width: 1000px) {
+
+  .file-upload-form{
+      margin: auto;
+      width: 50%;
+  }
+  .file-upload-label{
+      height: 150% !important;
+      margin: auto;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      font-size: 30px;
+      text-align: center;
+  }
+  .btn-success{
+      width: 100%;
+      font-size: 28px;
+  }
+}
