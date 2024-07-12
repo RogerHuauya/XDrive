@@ -52,7 +52,7 @@ body.custom-background {
   background-color: #ddd;
   padding: 30px 70px;
   border-radius: 40px;
-  border: 2px dashed rgb(82, 82, 82);
+  border: 1px solid green;
   box-shadow: 0px 0px 200px -50px rgba(0, 0, 0, 0.719);
 }
 

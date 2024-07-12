@@ -243,6 +243,7 @@ async function uploadFile(event, masterFileId = null, startChunk = 0) {
         await clearChunksFromIndexedDB(masterFileId); //
 
         console.log('4 - Archivo subido exitosamente!');
+        alert('se subio correctamente el archivo')
     } catch (error) {
         console.error('Error durante la subida del archivo:', error);
     }
@@ -317,6 +318,25 @@ async function printIndexedDBContents() {
             document.body.removeChild(link);
         } catch (error) {
             console.error('Error downloading file:', error);
+        }
+    }
+
+
+
+    function handleFileSelect(event) {
+        const fileInput = event.target;
+        const file = fileInput.files[0];
+        const fileNameElement = document.getElementById('file-name');
+        const uploadButton = document.getElementById('upload-button');
+
+        if (file) {
+            fileNameElement.textContent = `File to upload : ${file.name}`;
+            fileNameElement.style.display = 'block';
+            uploadButton.disabled = false;
+        } else {
+            fileNameElement.textContent = '';
+            fileNameElement.style.display = 'none';
+            uploadButton.disabled = true;
         }
     }
 

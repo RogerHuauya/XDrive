@@ -1,6 +1,5 @@
-
-<form class="file-upload-form" onsubmit="uploadFile(event)">
-    <label for="file" class="file-upload-label">
+<form class="file-upload-form d-flex flex-column"  onsubmit="uploadFile(event)">
+    <label for="file" class="file-upload-label" >
         <div class="file-upload-design" ondrop="dropHandler(event);" ondrag="dragOverHandler(event);">
             <svg viewBox="0 0 640 512" height="1em">
                 <path
@@ -9,10 +8,11 @@
             </svg>
             <p>Drag and Drop</p>
             <p>or</p>
-            <span class="browse-button">Browse file</span>
+            <span class="btn btn-success" style="border-radius: 12px">Browse file</span>
         </div>
-        <input id="file" type="file"/>
-        <input type="hidden"  name="csrfmiddlewaretoken" id="csrf_token" value="{{ csrf_token }}">
-        <button type="submit">Upload</button>
+        <input id="file" type="file" onchange="handleFileSelect(event)"/>
+        <input type="hidden" name="csrfmiddlewaretoken" id="csrf_token" value="{{ csrf_token }}">
     </label>
+    <p id="file-name" style="margin-top: 10px; display: none;color: white"></p>
+    <button id="upload-button" class="btn btn-success" style="width: 100%; border-radius: 12px" type="submit" disabled>Upload</button> <!-- Botón deshabilitado inicialmente -->
 </form>

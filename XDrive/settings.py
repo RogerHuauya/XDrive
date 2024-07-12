@@ -30,7 +30,7 @@ SECRET_KEY = ('django-insecure-=oluke6(y*3p&#'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost','3.89.249.202']
 
 CHUNK_SIZE = 1024 * 1024 * 5  # 5MB
 
